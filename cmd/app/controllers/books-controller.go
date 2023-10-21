@@ -1,87 +1,94 @@
 package controllers
 
 import (
-	"time"
-
 	"github.com/Mth-Ryan/waveaction/pkg/application/dtos"
 	"github.com/Mth-Ryan/waveaction/pkg/application/interfaces"
+	"github.com/Mth-Ryan/waveaction/pkg/application/services"
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 type BooksController struct{
 	validator interfaces.JsonValidator
+	service services.BooksService
 }
 
 func NewBooksController(
 	validator interfaces.JsonValidator,
+	service services.BooksService,
 ) *BooksController {
 	return &BooksController{
 		validator,
+		service,
 	}
 }
 
 func (bc *BooksController) GetAll(ctx *fiber.Ctx) error {
-	return ctx.JSON([]dtos.BookOutputDto{
-		{
-			ID:        uuid.New(),
-			Title:     "Game of Thrones",
-			Author:    "J.R.R Martin",
-			CreatedAt: time.Now(),
-		},
-		{
-			ID:        uuid.New(),
-			Title:     "Fire and Blood",
-			Author:    "J.R.R Martin",
-			CreatedAt: time.Now(),
-		},
-	})
+	books, err := bc.service.GetAll()
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(books)
 }
 
 func (bc *BooksController) Get(ctx *fiber.Ctx) error {
-	return ctx.JSON(dtos.BookOutputDto{
-		ID:        uuid.New(),
-		Title:     "Game of Thrones",
-		Author:    "J.R.R Martin",
-		CreatedAt: time.Now(),
-	})
+	id, err := bindUUIDParam(ctx, "id")
+	if (err != nil) {
+		return err
+	}
+
+	book, err := bc.service.Get(id)
+	if err != nil {
+		return ctx.SendStatus(fiber.StatusNotFound)
+	}
+
+	return ctx.JSON(book)
 }
 
 func (bc *BooksController) Create(ctx *fiber.Ctx) error {
 	input := new(dtos.BookInputDto)
-	ctx.BodyParser(input)
-
-	ok, errors := bc.validator.Validate(input)
-	if (!ok) {
-		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
+	if err := bindAndValidate(ctx, bc.validator, input); err != nil {
+		return err
 	}
 
-	return ctx.JSON(dtos.BookOutputDto{
-		ID:        uuid.New(),
-		Title:     input.Title,
-		Author:    input.Author,
-		CreatedAt: time.Now(),
-	})
+	book, err := bc.service.Create(*input)
+	if (err != nil) {
+		return ctx.SendStatus(fiber.StatusInternalServerError)
+	}
+	
+	return ctx.JSON(book)
 }
 
 func (bc *BooksController) Update(ctx *fiber.Ctx) error {
-	input := new(dtos.BookInputDto)
-	ctx.BodyParser(input)
-
-	ok, errors := bc.validator.Validate(input)
-	if (!ok) {
-		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
+	id, err := bindUUIDParam(ctx, "id")
+	if (err != nil) {
+		return err
 	}
 
-	return ctx.JSON(dtos.BookOutputDto{
-		ID:        uuid.New(),
-		Title:     input.Title,
-		Author:    input.Author,
-		CreatedAt: time.Now(),
-	})
+	input := new(dtos.BookInputDto)
+	if err := bindAndValidate(ctx, bc.validator, input); err != nil {
+		return err
+	}
+
+	book, err := bc.service.Update(id, *input)
+	if (err != nil) {
+		return ctx.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return ctx.JSON(book)
 }
 
 func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
+	id, err := bindUUIDParam(ctx, "id")
+	if (err != nil) {
+		return err
+	}
+
+	err = bc.service.Delete(id)
+	if (err != nil) {
+		return ctx.SendStatus(fiber.StatusInternalServerError)
+	}
+
 	return ctx.SendStatus(fiber.StatusOK)
 }
 

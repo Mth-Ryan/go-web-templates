@@ -7,7 +7,8 @@ import (
 	"github.com/Mth-Ryan/waveaction/cmd/app/webserver"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/Mth-Ryan/waveaction/pkg/infra/data"
-	"github.com/Mth-Ryan/waveaction/pkg/infra/services"
+	infraservices "github.com/Mth-Ryan/waveaction/pkg/infra/services"
+	appservices "github.com/Mth-Ryan/waveaction/pkg/application/services"
 	"go.uber.org/fx"
 )
 
@@ -28,7 +29,8 @@ func main() {
 	app := fx.New(
 		conf.Module,
 		data.Module,
-		services.Module,
+		infraservices.Module,
+		appservices.Module,
 		controllers.Module,
 		webserver.Module,
 		fx.Invoke(RegisterWebServer),
