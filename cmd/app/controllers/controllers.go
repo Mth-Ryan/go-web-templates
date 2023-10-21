@@ -5,25 +5,13 @@ import (
 	"go.uber.org/fx"
 )
 
-var Module = fx.Provide(NewControllersGroup)
-
-func NewControllersGroup() *ControllersGroup {
-	controllers := []BaseController {
-		NewIndexController(),
-		NewHomeController(),
-	}
-
-	return &ControllersGroup { controllers }
-}
+var Module = fx.Provide(
+	NewIndexController,
+	NewHomeController,
+	NewBooksController,
+)
 
 type BaseController interface {
 	GetRouter(app *fiber.App) fiber.Router
 }
 
-type ControllersGroup struct {
-	controllers []BaseController
-}
-
-func (c *ControllersGroup) GetAll() []BaseController {
-	return c.controllers
-}

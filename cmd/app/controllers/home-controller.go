@@ -11,7 +11,13 @@ func NewHomeController() *HomeController {
 }
 
 func (hc *HomeController) Index(ctx *fiber.Ctx) error {
-	return ctx.SendString("Hello world")
+	return ctx.JSON(
+		struct { 
+			Message string
+		}{ 
+			Message: "See the example CRUD in /books",
+		},
+	)
 }
 
 func (hc *HomeController) GetRouter(app *fiber.App) fiber.Router {

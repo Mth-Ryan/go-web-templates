@@ -19,22 +19,28 @@ type WebServer interface {
 type FiberWebServer struct {
 	Server *fiber.App
 	Config *conf.AppConf
-	Controllers *controllers.ControllersGroup
+	Controllers []controllers.BaseController
 }
 
 func NewFiberWebServer(
 	appConf *conf.AppConf,
-	controllers *controllers.ControllersGroup,
+	indexController *controllers.IndexController,
+	homeController *controllers.HomeController,
+	booksController *controllers.BooksController,
 ) *FiberWebServer {
 	return &FiberWebServer{
 		Server: fiber.New(),
 		Config: appConf,
-		Controllers: controllers,
+		Controllers: []controllers.BaseController {
+			indexController,
+			homeController,
+			booksController,
+		},
 	}
 }
 
 func (ws *FiberWebServer) StartServer() error {
-	for _, controller := range ws.Controllers.GetAll() {
+	for _, controller := range ws.Controllers {
 		_ = controller.GetRouter(ws.Server)
 	}
 
