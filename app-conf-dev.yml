@@ -1,1 +1,14 @@
 port: 8080
+
+data:
+  database:
+    user: "${DB_USER|docker}"
+    pass: "${DB_PASS|docker}"
+    name: "${DB_NAME|waveaction_dev}"
+    host: "${DB_HOST|localhost}"
+    port: "${DB_PORT|5432}"
+
+  cache:
+    host: "${CACHE_HOST|localhost}"
+    port: "${CACHE_PASS|docker}"
+    port: "${CACHE_PORT|6379}"

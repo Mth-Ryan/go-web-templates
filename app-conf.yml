@@ -1,1 +1,14 @@
 port: 80
+
+data:
+  database:
+    user: "${DB_USER}"
+    pass: "${DB_PASS}"
+    name: "${DB_NAME|waveaction}"
+    host: "${DB_HOST}"
+    port: "${DB_PORT|5432}"
+
+  cache:
+    host: "${CACHE_HOST}"
+    port: "${CACHE_PASS}"
+    port: "${CACHE_PORT|6379}"

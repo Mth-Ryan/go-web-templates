@@ -11,13 +11,23 @@ var Module = fx.Options(fx.Provide(NewAppConf))
 type AppConf struct {
 	RunMode string
 	Port    int `config:"port"`
+	Data    struct {
+		Database struct {
+			User string `config:"user"`
+			Pass string `config:"pass"`
+			Name string `config:"name"`
+			Host string `config:"host"`
+			Port string `config:"port"`
+		}
+		Cache struct {
+			Host string `config:"host"`
+			Pass string `config:"pass"`
+			Port string `config:"port"`
+		}
+	}
 }
 
-func NewAppConf() *AppConf {
-	return getAppConf()
-}
-
-func getAppConf() *AppConf {
+func NewAppConf() (*AppConf, error) {
 	appConf := &AppConf{}
 
 	config.WithOptions(config.ParseEnv, func(o *config.Options) {
@@ -32,13 +42,13 @@ func getAppConf() *AppConf {
 	}
 
 	if err := config.LoadFiles(confFilename); err != nil {
-		panic(err)
+		return appConf, err
 	}
 
 	if err := config.Decode(&appConf); err != nil {
-		panic(err)
+		return appConf, err
 	}
 
 	appConf.RunMode = RunMode
-	return appConf
+	return appConf, nil
 }
