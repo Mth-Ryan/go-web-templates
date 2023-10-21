@@ -9,10 +9,13 @@ require (
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/goccy/go-yaml v1.11.2 // indirect
 	github.com/gofiber/fiber/v2 v2.50.0 // indirect
+	github.com/golang-migrate/migrate/v4 v4.16.2 // indirect
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/gookit/config/v2 v2.2.4 // indirect
 	github.com/gookit/goutil v0.6.14 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/klauspost/compress v1.17.1 // indirect
 	github.com/lib/pq v1.10.9 // indirect

@@ -20,6 +20,7 @@ $(BIN_DIR)/%: $(SRC_DIR)/%
 copy_output:
 	cp ./app-conf.yml $(BIN_DIR)/app-conf.yml
 	cp ./app-conf-dev.yml $(BIN_DIR)/app-conf-dev.yml
+	cp -rf ./migrations $(BIN_DIR)/migrations
 
 clean:
 	rm -rf $(BINARIES)
