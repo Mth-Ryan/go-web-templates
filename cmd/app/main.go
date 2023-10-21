@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 
+	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
 	"github.com/Mth-Ryan/waveaction/cmd/app/webserver"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"go.uber.org/fx"
@@ -24,6 +25,7 @@ func RegisterWebServer(lc fx.Lifecycle, ws *webserver.FiberWebServer) {
 func main() {
 	app := fx.New(
 		conf.Module,
+		controllers.Module,
 		webserver.Module,
 		fx.Invoke(RegisterWebServer),
 	)

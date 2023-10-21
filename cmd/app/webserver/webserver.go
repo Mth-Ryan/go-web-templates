@@ -3,6 +3,7 @@ package webserver
 import (
 	"fmt"
 
+	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/fx"
@@ -18,19 +19,24 @@ type WebServer interface {
 type FiberWebServer struct {
 	Server *fiber.App
 	Config *conf.AppConf
+	Controllers *controllers.ControllersGroup
 }
 
-func NewFiberWebServer(appConf *conf.AppConf) *FiberWebServer {
+func NewFiberWebServer(
+	appConf *conf.AppConf,
+	controllers *controllers.ControllersGroup,
+) *FiberWebServer {
 	return &FiberWebServer{
 		Server: fiber.New(),
 		Config: appConf,
+		Controllers: controllers,
 	}
 }
 
 func (ws *FiberWebServer) StartServer() error {
-	ws.Server.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello from go")
-	})
+	for _, controller := range ws.Controllers.GetAll() {
+		_ = controller.GetRouter(ws.Server)
+	}
 
 	return ws.Server.Listen(fmt.Sprintf(":%d", ws.Config.Port))
 }
