@@ -52,21 +52,19 @@ func (br *BooksRepository) GetAll() ([]entities.Book, error) {
 	return models, err
 }
 
-func (br *BooksRepository) Create(entity entities.Book) (entities.Book, error) {
-	model := entities.Book{}
+func (br *BooksRepository) Create(entity *entities.Book) error {
 	err := br.db.Ctx.QueryRow(`
 		INSERT INTO books (id, title, author, created_at)
 		VALUES ($1, $2, $3, $4)
 		RETURNING id, title, author, created_at
 		`,
 		entity.ID, entity.Title, entity.Author, entity.CreatedAt,
-	).Scan(&model.ID, &model.Title, &model.Author, &model.CreatedAt)
+	).Scan(&entity.ID, &entity.Title, &entity.Author, &entity.CreatedAt)
 
-	return model, err
+	return err
 }
 
-func (br *BooksRepository) Update(id uuid.UUID, entity entities.Book) (entities.Book, error) {
-	model := entities.Book{}
+func (br *BooksRepository) Update(id uuid.UUID, entity *entities.Book) error {
 	err := br.db.Ctx.QueryRow(
 		`UPDATE books
 		 SET title = $1, author = $2
@@ -74,9 +72,9 @@ func (br *BooksRepository) Update(id uuid.UUID, entity entities.Book) (entities.
 		 RETURNING id, title, author, created_at
 		`,
 		entity.Title, entity.Author, id,
-	).Scan(&model.ID, &model.Title, &model.Author, &model.CreatedAt)
+	).Scan(&entity.ID, &entity.Title, &entity.Author, &entity.CreatedAt)
 
-	return model, err
+	return err
 }
 
 func (br *BooksRepository) Delete(id uuid.UUID) error {

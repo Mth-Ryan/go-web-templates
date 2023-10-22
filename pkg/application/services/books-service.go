@@ -46,16 +46,16 @@ func (b *ActualBooksService) Get(id uuid.UUID) (dtos.BookOutputDto, error) {
 
 func (b *ActualBooksService) Create(input dtos.BookInputDto) (dtos.BookOutputDto, error) {
 	entity := b.mapper.EntityFromInput(&input)
-	newEntity, err := b.repository.Create(entity)
-	output := b.mapper.OutputFromEntity(&newEntity)
+	err := b.repository.Create(&entity)
+	output := b.mapper.OutputFromEntity(&entity)
 
 	return output, err
 }
 
 func (b *ActualBooksService) Update(id uuid.UUID, input dtos.BookInputDto) (dtos.BookOutputDto, error) {
 	entity := b.mapper.EntityFromInput(&input)
-	newEntity, err := b.repository.Update(id, entity)
-	output := b.mapper.OutputFromEntity(&newEntity)
+	err := b.repository.Update(id, &entity)
+	output := b.mapper.OutputFromEntity(&entity)
 
 	return output, err
 }
