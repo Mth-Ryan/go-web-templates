@@ -8,7 +8,9 @@ import (
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"
 	appservices "github.com/Mth-Ryan/waveaction/pkg/application/services"
+	cacherepositories "github.com/Mth-Ryan/waveaction/pkg/infra/cache-repositories"
 	"github.com/Mth-Ryan/waveaction/pkg/infra/data"
+	eventhandlers "github.com/Mth-Ryan/waveaction/pkg/infra/event-handlers"
 	"github.com/Mth-Ryan/waveaction/pkg/infra/repositories"
 	infraservices "github.com/Mth-Ryan/waveaction/pkg/infra/services"
 	"go.uber.org/fx"
@@ -32,8 +34,10 @@ func main() {
 		conf.Module,
 		data.Module,
 		repositories.Module,
+		cacherepositories.Module,
 		mappers.Module,
 		infraservices.Module,
+		eventhandlers.Module,
 		appservices.Module,
 		controllers.Module,
 		webserver.Module,

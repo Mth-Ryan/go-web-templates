@@ -19,3 +19,7 @@ func NewBookCreatedEvent(newBook entities.Book) BookCreatedEvent {
 		Timestamp: time.Now(),
 	}
 }
+
+func (e BookCreatedEvent) GetBookEventKind() int {
+	return e.EventKind
+}

@@ -3,19 +3,23 @@ package books
 import (
 	"time"
 
-	"github.com/Mth-Ryan/waveaction/pkg/domain/entities"
+	"github.com/google/uuid"
 )
 
 type BookDeletedEvent struct {
-	EventKind int           `json:"event_kind"`
-	OldBook   entities.Book `json:"old_book"`
-	Timestamp time.Time     `json:"timestamp"`
+	EventKind int       `json:"event_kind"`
+	OldBookID uuid.UUID `json:"old_book_id"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
-func NewBookDeletedEvent(oldBook entities.Book) BookDeletedEvent {
+func NewBookDeletedEvent(oldBookID uuid.UUID) BookDeletedEvent {
 	return BookDeletedEvent{
 		EventKind: EVENT_KIND_DELETED,
-		OldBook:   oldBook,
+		OldBookID: oldBookID,
 		Timestamp: time.Now(),
 	}
+}
+
+func (e BookDeletedEvent) GetBookEventKind() int {
+	return e.EventKind
 }
