@@ -7,8 +7,8 @@ import (
 )
 
 type Book struct {
-	ID        uuid.UUID `sql:"id"`
-	Title     string    `sql:"title"`
-	Author    string    `sql:"author"`
-	CreatedAt time.Time `sql:"created_at"`
+	ID        uuid.UUID `sql:"id" db:"books.id"`
+	Title     string    `sql:"title" db:"books.title"`
+	Author    string    `sql:"author" db:"books.author"`
+	CreatedAt time.Time `sql:"created_at" db:"books.created_at"`
 }

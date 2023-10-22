@@ -1,9 +1,9 @@
 package services
 
 import (
-	"time"
-
 	"github.com/Mth-Ryan/waveaction/pkg/application/dtos"
+	"github.com/Mth-Ryan/waveaction/pkg/application/interfaces/repositories"
+	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"
 	"github.com/google/uuid"
 )
 
@@ -15,56 +15,51 @@ type BooksService interface {
 	Delete(id uuid.UUID) error
 }
 
-type ActualBooksService struct{}
+type ActualBooksService struct {
+	repository repositories.BooksRepository
+	mapper     *mappers.BooksMapper
+}
 
-func NewActualBooksService() *ActualBooksService {
-	return &ActualBooksService{}
+func NewActualBooksService(
+	repository repositories.BooksRepository,
+	mapper *mappers.BooksMapper,
+) *ActualBooksService {
+	return &ActualBooksService{
+		repository,
+		mapper,
+	}
 }
 
 func (b *ActualBooksService) GetAll() ([]dtos.BookOutputDto, error) {
-	return []dtos.BookOutputDto{
-		{
-			ID:        uuid.New(),
-			Title:     "Game of Thrones",
-			Author:    "J.R.R Martin",
-			CreatedAt: time.Now(),
-		},
-		{
-			ID:        uuid.New(),
-			Title:     "Fire and Blood",
-			Author:    "J.R.R Martin",
-			CreatedAt: time.Now(),
-		},
-	}, nil
+	entities, err := b.repository.GetAll()
+	outputs := b.mapper.OutputsFromEntities(&entities)
+
+	return outputs, err
 }
 
 func (b *ActualBooksService) Get(id uuid.UUID) (dtos.BookOutputDto, error) {
-	return dtos.BookOutputDto{
-		ID:        uuid.New(),
-		Title:     "Game of Thrones",
-		Author:    "J.R.R Martin",
-		CreatedAt: time.Now(),
-	}, nil
+	entity, err := b.repository.Get(id)
+	output := b.mapper.OutputFromEntity(&entity)
+
+	return output, err
 }
 
 func (b *ActualBooksService) Create(input dtos.BookInputDto) (dtos.BookOutputDto, error) {
-	return dtos.BookOutputDto{
-		ID:        uuid.New(),
-		Title:     input.Title,
-		Author:    input.Author,
-		CreatedAt: time.Now(),
-	}, nil
+	entity := b.mapper.EntityFromInput(&input)
+	newEntity, err := b.repository.Create(entity)
+	output := b.mapper.OutputFromEntity(&newEntity)
+
+	return output, err
 }
 
 func (b *ActualBooksService) Update(id uuid.UUID, input dtos.BookInputDto) (dtos.BookOutputDto, error) {
-	return dtos.BookOutputDto{
-		ID:        id,
-		Title:     input.Title,
-		Author:    input.Author,
-		CreatedAt: time.Now(),
-	}, nil
+	entity := b.mapper.EntityFromInput(&input)
+	newEntity, err := b.repository.Update(id, entity)
+	output := b.mapper.OutputFromEntity(&newEntity)
+
+	return output, err
 }
 
 func (b *ActualBooksService) Delete(id uuid.UUID) error {
-	return nil
+	return b.repository.Delete(id)
 }

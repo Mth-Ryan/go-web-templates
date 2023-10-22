@@ -6,9 +6,11 @@ import (
 	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
 	"github.com/Mth-Ryan/waveaction/cmd/app/webserver"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
-	"github.com/Mth-Ryan/waveaction/pkg/infra/data"
-	infraservices "github.com/Mth-Ryan/waveaction/pkg/infra/services"
+	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"
 	appservices "github.com/Mth-Ryan/waveaction/pkg/application/services"
+	"github.com/Mth-Ryan/waveaction/pkg/infra/data"
+	"github.com/Mth-Ryan/waveaction/pkg/infra/repositories"
+	infraservices "github.com/Mth-Ryan/waveaction/pkg/infra/services"
 	"go.uber.org/fx"
 )
 
@@ -29,6 +31,8 @@ func main() {
 	app := fx.New(
 		conf.Module,
 		data.Module,
+		repositories.Module,
+		mappers.Module,
 		infraservices.Module,
 		appservices.Module,
 		controllers.Module,

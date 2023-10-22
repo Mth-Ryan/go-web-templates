@@ -6,6 +6,7 @@ import (
 	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"go.uber.org/fx"
 )
 
@@ -40,6 +41,8 @@ func NewFiberWebServer(
 }
 
 func (ws *FiberWebServer) StartServer() error {
+	ws.Server.Use(logger.New())
+
 	for _, controller := range ws.Controllers {
 		_ = controller.GetRouter(ws.Server)
 	}
