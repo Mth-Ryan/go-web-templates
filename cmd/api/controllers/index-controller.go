@@ -11,7 +11,13 @@ func NewIndexController() *IndexController {
 }
 
 func (ic *IndexController) Index(ctx *fiber.Ctx) error {
-	return ctx.Redirect("/home", 302)
+	return ctx.JSON(
+		struct { 
+			Message string
+		}{ 
+			Message: "See the example CRUD in /books",
+		},
+	)
 }
 
 func (ic *IndexController) GetRouter(app *fiber.App) fiber.Router {

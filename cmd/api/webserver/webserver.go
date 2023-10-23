@@ -3,7 +3,7 @@ package webserver
 import (
 	"fmt"
 
-	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
+	"github.com/Mth-Ryan/waveaction/cmd/api/controllers"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -26,7 +26,6 @@ type FiberWebServer struct {
 func NewFiberWebServer(
 	appConf *conf.AppConf,
 	indexController *controllers.IndexController,
-	homeController *controllers.HomeController,
 	booksController *controllers.BooksController,
 ) *FiberWebServer {
 	return &FiberWebServer{
@@ -34,7 +33,6 @@ func NewFiberWebServer(
 		Config: appConf,
 		Controllers: []controllers.BaseController {
 			indexController,
-			homeController,
 			booksController,
 		},
 	}

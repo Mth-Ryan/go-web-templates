@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
-	"github.com/Mth-Ryan/waveaction/cmd/app/webserver"
+	"github.com/Mth-Ryan/waveaction/cmd/api/controllers"
+	"github.com/Mth-Ryan/waveaction/cmd/api/webserver"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
 	"github.com/Mth-Ryan/waveaction/internal/logger"
 	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"

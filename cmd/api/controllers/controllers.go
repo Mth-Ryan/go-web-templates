@@ -7,7 +7,6 @@ import (
 
 var Module = fx.Provide(
 	NewIndexController,
-	NewHomeController,
 	NewBooksController,
 )
 
