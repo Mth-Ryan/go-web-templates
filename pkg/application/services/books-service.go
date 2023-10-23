@@ -51,11 +51,16 @@ func (b *ActualBooksService) GetAll() ([]dtos.BookOutputDto, error) {
 func (b *ActualBooksService) Get(id uuid.UUID) (dtos.BookOutputDto, error) {
 	entity, err := b.cacheRepository.Get(id)
 	if err != nil {
-		log.Printf("Cache miss for: %s. err: '%s'", id.String(), err)
+		log.Printf("Cache miss for the book with ID: %s. err: '%s'\n", id.String(), err)
 		entity, err  = b.repository.Get(id)
+		
+		if err == nil {
+			log.Printf("Adding %s to the cache\n", id.String())
+			b.cacheRepository.Set(entity)
+		}
 	}
-	output := b.mapper.OutputFromEntity(&entity)
 
+	output := b.mapper.OutputFromEntity(&entity)
 	return output, err
 }
 
