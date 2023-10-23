@@ -6,6 +6,7 @@ import (
 	"github.com/Mth-Ryan/waveaction/cmd/app/controllers"
 	"github.com/Mth-Ryan/waveaction/cmd/app/webserver"
 	"github.com/Mth-Ryan/waveaction/internal/conf"
+	"github.com/Mth-Ryan/waveaction/internal/logger"
 	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"
 	appservices "github.com/Mth-Ryan/waveaction/pkg/application/services"
 	cacherepositories "github.com/Mth-Ryan/waveaction/pkg/infra/cache-repositories"
@@ -32,6 +33,7 @@ func RegisterWebServer(lc fx.Lifecycle, ws *webserver.FiberWebServer) {
 func main() {
 	app := fx.New(
 		conf.Module,
+		logger.Module,
 		data.Module,
 		repositories.Module,
 		cacherepositories.Module,

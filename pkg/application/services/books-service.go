@@ -1,8 +1,7 @@
 package services
 
 import (
-	"log"
-
+	"github.com/Mth-Ryan/waveaction/internal/logger"
 	"github.com/Mth-Ryan/waveaction/pkg/application/dtos"
 	cacherepositories "github.com/Mth-Ryan/waveaction/pkg/application/interfaces/cache-repositories"
 	eventhandlers "github.com/Mth-Ryan/waveaction/pkg/application/interfaces/event-handlers"
@@ -21,6 +20,7 @@ type BooksService interface {
 }
 
 type ActualBooksService struct {
+	logger          logger.ApplicationLogger
 	repository      repositories.BooksRepository
 	mapper          *mappers.BooksMapper
 	cacheRepository cacherepositories.BooksCacheRepository
@@ -28,12 +28,14 @@ type ActualBooksService struct {
 }
 
 func NewActualBooksService(
+	logger logger.ApplicationLogger,
 	repository repositories.BooksRepository,
 	mapper *mappers.BooksMapper,
 	cacheRepository cacherepositories.BooksCacheRepository,
 	eventsHandler eventhandlers.BooksEventHandler,
 ) *ActualBooksService {
 	return &ActualBooksService{
+		logger,
 		repository,
 		mapper,
 		cacheRepository,
@@ -51,11 +53,18 @@ func (b *ActualBooksService) GetAll() ([]dtos.BookOutputDto, error) {
 func (b *ActualBooksService) Get(id uuid.UUID) (dtos.BookOutputDto, error) {
 	entity, err := b.cacheRepository.Get(id)
 	if err != nil {
-		log.Printf("Cache miss for the book with ID: %s. err: '%s'\n", id.String(), err)
-		entity, err  = b.repository.Get(id)
-		
+		entity, err = b.repository.Get(id)
+
 		if err == nil {
-			log.Printf("Adding %s to the cache\n", id.String())
+			b.logger.Warning(
+				b.logger.Format("Cache miss for the book with ID: %s", id.String()),
+				b.logger.Format("err: '%v'", err),
+			)
+
+			b.logger.Info(
+				b.logger.Format("Adding %s to the cache", id.String()),
+			)
+
 			b.cacheRepository.Set(entity)
 		}
 	}
