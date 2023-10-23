@@ -22,6 +22,9 @@ copy_output:
 	cp ./app-conf-dev.yml $(BIN_DIR)/app-conf-dev.yml
 	cp -rf ./migrations $(BIN_DIR)/migrations
 
+	cp -rf ./public $(BIN_DIR)/public
+	cp -rf ./templates $(BIN_DIR)/templates
+
 clean:
 	rm -rf $(BINARIES)
 
