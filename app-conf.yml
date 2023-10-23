@@ -10,5 +10,5 @@ data:
 
   cache:
     host: "${CACHE_HOST}"
-    port: "${CACHE_PASS}"
+    pass: "${CACHE_PASS}"
     port: "${CACHE_PORT|6379}"

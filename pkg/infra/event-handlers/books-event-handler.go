@@ -25,15 +25,21 @@ func (h *BooksEventHandler) Handle(event events.BookEvent) {
 
 	case events.BookCreatedEvent:
 		err := h.cache.Set(e.NewBook)
-		log.Println(err)
+		if (err != nil) {
+			log.Println(err)
+		}
 
 	case events.BookUpdatedEvent:
 		err := h.cache.Set(e.NewBook)
-		log.Println(err)
+		if (err != nil) {
+			log.Println(err)
+		}
 
 	case events.BookDeletedEvent:
 		err := h.cache.Delete(e.OldBookID)
-		log.Println(err)
+		if (err != nil) {
+			log.Println(err)
+		}
 
 	}
 }

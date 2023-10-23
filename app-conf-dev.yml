@@ -10,5 +10,5 @@ data:
 
   cache:
     host: "${CACHE_HOST|localhost}"
-    port: "${CACHE_PASS|docker}"
+    pass: "${CACHE_PASS|docker}"
     port: "${CACHE_PORT|6379}"

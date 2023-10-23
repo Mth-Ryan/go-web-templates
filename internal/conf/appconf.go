@@ -18,12 +18,12 @@ type AppConf struct {
 			Name string `config:"name"`
 			Host string `config:"host"`
 			Port string `config:"port"`
-		}
+		} `config:"database"`
 		Cache struct {
 			Host string `config:"host"`
 			Pass string `config:"pass"`
 			Port string `config:"port"`
-		}
+		} `config:"cache"`
 	}
 }
 
