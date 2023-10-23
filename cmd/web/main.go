@@ -4,9 +4,8 @@ import (
 	"context"
 
 	"github.com/Mth-Ryan/waveaction/cmd/web/controllers"
+	"github.com/Mth-Ryan/waveaction/cmd/web/views"
 	"github.com/Mth-Ryan/waveaction/cmd/web/webserver"
-	"github.com/Mth-Ryan/waveaction/pkg/conf"
-	"github.com/Mth-Ryan/waveaction/pkg/logger"
 	"github.com/Mth-Ryan/waveaction/internal/application/mappers"
 	appservices "github.com/Mth-Ryan/waveaction/internal/application/services"
 	cacherepositories "github.com/Mth-Ryan/waveaction/internal/infra/cache-repositories"
@@ -14,6 +13,8 @@ import (
 	eventhandlers "github.com/Mth-Ryan/waveaction/internal/infra/event-handlers"
 	"github.com/Mth-Ryan/waveaction/internal/infra/repositories"
 	infraservices "github.com/Mth-Ryan/waveaction/internal/infra/services"
+	"github.com/Mth-Ryan/waveaction/pkg/conf"
+	"github.com/Mth-Ryan/waveaction/pkg/logger"
 	"go.uber.org/fx"
 )
 
@@ -41,6 +42,7 @@ func main() {
 		infraservices.Module,
 		eventhandlers.Module,
 		appservices.Module,
+		views.Module,
 		controllers.Module,
 		webserver.Module,
 		fx.Invoke(RegisterWebServer),

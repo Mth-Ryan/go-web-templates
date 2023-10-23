@@ -34,7 +34,7 @@ func NewFiberWebServer(
 	server := fiber.New()
 	
 	server.Use(logger.New())
-	server.Static("/public", "./public")
+	server.Static("/", "./public")
 
 	for _, controller := range controllers {
 		controller.RegisterController(server)

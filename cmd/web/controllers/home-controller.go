@@ -1,27 +1,31 @@
 package controllers
 
 import (
+	"github.com/Mth-Ryan/waveaction/cmd/web/views"
 	"github.com/gofiber/fiber/v2"
 )
 
-type HomeController struct {}
+type HomeController struct {
+	views *views.HomeViews
+}
 
-func NewHomeController() *HomeController {
-	return &HomeController {}
+func NewHomeController(views *views.HomeViews) *HomeController {
+	return &HomeController {
+		views,
+	}
 }
 
 func (hc *HomeController) Index(ctx *fiber.Ctx) error {
-	return ctx.JSON(
-		struct { 
-			Message string
-		}{ 
-			Message: "See the example CRUD in /books",
-		},
-	)
+	raw, err := hc.views.Index()
+	if err != nil {
+		return err
+	}
+
+	return renderView(ctx, raw)
 }
 
 func (hc *HomeController) RegisterController(app *fiber.App) {
-	router := app.Group("/")
+	router := app.Group("/home")
 	
 	router.Get("/", hc.Index)
 }

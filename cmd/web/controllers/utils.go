@@ -33,3 +33,8 @@ func bindUUIDParam(ctx *fiber.Ctx, param string) (uuid.UUID, error) {
 
 	return id, nil
 }
+
+func renderView(ctx *fiber.Ctx, viewBytes []byte) error {
+	ctx.Set("Content-type", "text/html")
+	return ctx.Send(viewBytes)
+}
