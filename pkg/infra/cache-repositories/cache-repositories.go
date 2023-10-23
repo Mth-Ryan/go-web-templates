@@ -2,6 +2,7 @@ package cacherepositories
 
 import (
 	"encoding/json"
+	"fmt"
 
 	cacherepositories "github.com/Mth-Ryan/waveaction/pkg/application/interfaces/cache-repositories"
 	"go.uber.org/fx"
@@ -29,4 +30,8 @@ func mustDeserializeFromJson(data string, target interface{}) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func addPrefix(prefix string, value string) string {
+	return fmt.Sprintf("%s:%s", prefix, value)
 }

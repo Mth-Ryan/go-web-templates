@@ -1,11 +1,14 @@
 package services
 
 import (
+	"log"
+
 	"github.com/Mth-Ryan/waveaction/pkg/application/dtos"
+	cacherepositories "github.com/Mth-Ryan/waveaction/pkg/application/interfaces/cache-repositories"
 	eventhandlers "github.com/Mth-Ryan/waveaction/pkg/application/interfaces/event-handlers"
-	events "github.com/Mth-Ryan/waveaction/pkg/domain/events/books"
 	"github.com/Mth-Ryan/waveaction/pkg/application/interfaces/repositories"
 	"github.com/Mth-Ryan/waveaction/pkg/application/mappers"
+	events "github.com/Mth-Ryan/waveaction/pkg/domain/events/books"
 	"github.com/google/uuid"
 )
 
@@ -18,19 +21,22 @@ type BooksService interface {
 }
 
 type ActualBooksService struct {
-	repository    repositories.BooksRepository
-	mapper        *mappers.BooksMapper
-	eventsHandler eventhandlers.BooksEventHandler
+	repository      repositories.BooksRepository
+	mapper          *mappers.BooksMapper
+	cacheRepository cacherepositories.BooksCacheRepository
+	eventsHandler   eventhandlers.BooksEventHandler
 }
 
 func NewActualBooksService(
 	repository repositories.BooksRepository,
 	mapper *mappers.BooksMapper,
+	cacheRepository cacherepositories.BooksCacheRepository,
 	eventsHandler eventhandlers.BooksEventHandler,
 ) *ActualBooksService {
 	return &ActualBooksService{
 		repository,
 		mapper,
+		cacheRepository,
 		eventsHandler,
 	}
 }
@@ -43,7 +49,11 @@ func (b *ActualBooksService) GetAll() ([]dtos.BookOutputDto, error) {
 }
 
 func (b *ActualBooksService) Get(id uuid.UUID) (dtos.BookOutputDto, error) {
-	entity, err := b.repository.Get(id)
+	entity, err := b.cacheRepository.Get(id)
+	if err != nil {
+		log.Printf("Cache miss for: %s. err: '%s'", id.String(), err)
+		entity, err  = b.repository.Get(id)
+	}
 	output := b.mapper.OutputFromEntity(&entity)
 
 	return output, err
