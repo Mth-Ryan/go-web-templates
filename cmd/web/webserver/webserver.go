@@ -10,7 +10,12 @@ import (
 	"go.uber.org/fx"
 )
 
-var Module = fx.Options(fx.Provide(NewFiberWebServer))
+var Module = fx.Provide(
+	fx.Annotate(
+		NewFiberWebServer,
+		fx.ParamTags(`group:"controllers"`),
+	),
+)
 
 type WebServer interface {
 	StartServer() error
@@ -20,34 +25,28 @@ type WebServer interface {
 type FiberWebServer struct {
 	Server *fiber.App
 	Config *conf.AppConf
-	Controllers []controllers.BaseController
 }
 
 func NewFiberWebServer(
+	controllers []controllers.BaseController, // This must be the first parameter
 	appConf *conf.AppConf,
-	indexController *controllers.IndexController,
-	homeController *controllers.HomeController,
-	booksController *controllers.BooksController,
 ) *FiberWebServer {
+	server := fiber.New()
+	
+	server.Use(logger.New())
+	server.Static("/public", "./public")
+
+	for _, controller := range controllers {
+		controller.RegisterController(server)
+	}
+
 	return &FiberWebServer{
-		Server: fiber.New(),
+		Server: server,
 		Config: appConf,
-		Controllers: []controllers.BaseController {
-			indexController,
-			homeController,
-			booksController,
-		},
 	}
 }
 
 func (ws *FiberWebServer) StartServer() error {
-	ws.Server.Use(logger.New())
-	ws.Server.Static("/public", "./public")
-
-	for _, controller := range ws.Controllers {
-		_ = controller.GetRouter(ws.Server)
-	}
-
 	return ws.Server.Listen(fmt.Sprintf(":%d", ws.Config.Port))
 }
 

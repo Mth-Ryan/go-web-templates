@@ -20,11 +20,9 @@ func (hc *HomeController) Index(ctx *fiber.Ctx) error {
 	)
 }
 
-func (hc *HomeController) GetRouter(app *fiber.App) fiber.Router {
+func (hc *HomeController) RegisterController(app *fiber.App) {
 	router := app.Group("/")
 	
 	router.Get("/", hc.Index)
-
-	return router
 }
 

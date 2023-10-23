@@ -92,7 +92,7 @@ func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
 	return ctx.SendStatus(fiber.StatusOK)
 }
 
-func (bc *BooksController) GetRouter(app *fiber.App) fiber.Router {
+func (bc *BooksController) RegisterController(app *fiber.App) {
 	router := app.Group("/books")
 
 	router.Get("/", bc.GetAll)
@@ -100,6 +100,4 @@ func (bc *BooksController) GetRouter(app *fiber.App) fiber.Router {
 	router.Post("/", bc.Create)
 	router.Put("/:id", bc.Update)
 	router.Delete("/:id", bc.Delete)
-
-	return router
 }

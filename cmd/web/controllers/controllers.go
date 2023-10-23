@@ -6,12 +6,19 @@ import (
 )
 
 var Module = fx.Provide(
-	NewIndexController,
-	NewHomeController,
-	NewBooksController,
+	asController(NewIndexController),
+	asController(NewHomeController),
+	asController(NewBooksController),
 )
 
 type BaseController interface {
-	GetRouter(app *fiber.App) fiber.Router
+	RegisterController(app *fiber.App)
 }
 
+func asController(ctor any) any {
+	return fx.Annotate(
+		ctor,
+		fx.As(new(BaseController)),
+		fx.ResultTags(`group:"controllers"`),
+	)
+}
