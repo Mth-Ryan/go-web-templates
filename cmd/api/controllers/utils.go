@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/Mth-Ryan/waveaction/pkg/application/interfaces"
+	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )

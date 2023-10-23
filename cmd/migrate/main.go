@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Mth-Ryan/waveaction/internal/conf"
-	"github.com/Mth-Ryan/waveaction/pkg/infra/data"
+	"github.com/Mth-Ryan/waveaction/pkg/conf"
+	"github.com/Mth-Ryan/waveaction/internal/infra/data"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

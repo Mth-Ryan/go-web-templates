@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Mth-Ryan/waveaction/cmd/api/controllers"
-	"github.com/Mth-Ryan/waveaction/internal/conf"
+	"github.com/Mth-Ryan/waveaction/pkg/conf"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"go.uber.org/fx"

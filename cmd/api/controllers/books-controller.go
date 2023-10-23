@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"github.com/Mth-Ryan/waveaction/pkg/application/dtos"
-	"github.com/Mth-Ryan/waveaction/pkg/application/interfaces"
-	"github.com/Mth-Ryan/waveaction/pkg/application/services"
+	"github.com/Mth-Ryan/waveaction/internal/application/dtos"
+	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
+	"github.com/Mth-Ryan/waveaction/internal/application/services"
 	"github.com/gofiber/fiber/v2"
 )
 
