@@ -18,6 +18,7 @@ $(BIN_DIR)/%: $(SRC_DIR)/%
 	go build -o $@ $</main.go
 
 copy_output:
+	@mkdir -p $(BIN_DIR)
 	cp ./app-conf.yml $(BIN_DIR)/app-conf.yml
 	cp ./app-conf-dev.yml $(BIN_DIR)/app-conf-dev.yml
 	cp -rf ./migrations $(BIN_DIR)/migrations

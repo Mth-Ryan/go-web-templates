@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/Mth-Ryan/waveaction/cmd/web/views"
-	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
+	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
+	"github.com/Mth-Ryan/go-web-templates/internal/application/interfaces"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/Mth-Ryan/waveaction/cmd/web/views"
+	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
 	"github.com/gofiber/fiber/v2"
 )
 

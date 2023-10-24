@@ -3,8 +3,8 @@ package mappers
 import (
 	"time"
 
-	"github.com/Mth-Ryan/waveaction/internal/application/dtos"
-	"github.com/Mth-Ryan/waveaction/internal/domain/entities"
+	"github.com/Mth-Ryan/go-web-templates/internal/application/dtos"
+	"github.com/Mth-Ryan/go-web-templates/internal/domain/entities"
 	"github.com/google/uuid"
 )
 

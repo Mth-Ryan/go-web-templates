@@ -3,8 +3,8 @@ package repositories
 import (
 	"database/sql"
 
-	"github.com/Mth-Ryan/waveaction/internal/domain/entities"
-	"github.com/Mth-Ryan/waveaction/internal/infra/data"
+	"github.com/Mth-Ryan/go-web-templates/internal/domain/entities"
+	"github.com/Mth-Ryan/go-web-templates/internal/infra/data"
 	"github.com/google/uuid"
 )
 

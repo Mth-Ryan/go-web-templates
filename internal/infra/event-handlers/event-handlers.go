@@ -1,7 +1,7 @@
 package eventhandlers
 
 import (
-	eventhandlers "github.com/Mth-Ryan/waveaction/internal/application/interfaces/event-handlers"
+	eventhandlers "github.com/Mth-Ryan/go-web-templates/internal/application/interfaces/event-handlers"
 	"go.uber.org/fx"
 )
 

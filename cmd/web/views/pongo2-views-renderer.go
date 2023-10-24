@@ -1,8 +1,8 @@
 package views
 
 import (
-	"github.com/Mth-Ryan/waveaction/pkg/conf"
-	"github.com/Mth-Ryan/waveaction/pkg/logger"
+	"github.com/Mth-Ryan/go-web-templates/pkg/conf"
+	"github.com/Mth-Ryan/go-web-templates/pkg/logger"
 	"github.com/flosch/pongo2/v6"
 )
 

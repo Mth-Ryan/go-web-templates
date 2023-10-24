@@ -3,17 +3,17 @@ package main
 import (
 	"context"
 
-	"github.com/Mth-Ryan/waveaction/cmd/api/controllers"
-	"github.com/Mth-Ryan/waveaction/cmd/api/webserver"
-	"github.com/Mth-Ryan/waveaction/pkg/conf"
-	"github.com/Mth-Ryan/waveaction/pkg/logger"
-	"github.com/Mth-Ryan/waveaction/internal/application/mappers"
-	appservices "github.com/Mth-Ryan/waveaction/internal/application/services"
-	cacherepositories "github.com/Mth-Ryan/waveaction/internal/infra/cache-repositories"
-	"github.com/Mth-Ryan/waveaction/internal/infra/data"
-	eventhandlers "github.com/Mth-Ryan/waveaction/internal/infra/event-handlers"
-	"github.com/Mth-Ryan/waveaction/internal/infra/repositories"
-	infraservices "github.com/Mth-Ryan/waveaction/internal/infra/services"
+	"github.com/Mth-Ryan/go-web-templates/cmd/api/controllers"
+	"github.com/Mth-Ryan/go-web-templates/cmd/api/webserver"
+	"github.com/Mth-Ryan/go-web-templates/pkg/conf"
+	"github.com/Mth-Ryan/go-web-templates/pkg/logger"
+	"github.com/Mth-Ryan/go-web-templates/internal/application/mappers"
+	appservices "github.com/Mth-Ryan/go-web-templates/internal/application/services"
+	cacherepositories "github.com/Mth-Ryan/go-web-templates/internal/infra/cache-repositories"
+	"github.com/Mth-Ryan/go-web-templates/internal/infra/data"
+	eventhandlers "github.com/Mth-Ryan/go-web-templates/internal/infra/event-handlers"
+	"github.com/Mth-Ryan/go-web-templates/internal/infra/repositories"
+	infraservices "github.com/Mth-Ryan/go-web-templates/internal/infra/services"
 	"go.uber.org/fx"
 )
 

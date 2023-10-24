@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/Mth-Ryan/waveaction/internal/application/interfaces/repositories"
+	"github.com/Mth-Ryan/go-web-templates/internal/application/interfaces/repositories"
 	"go.uber.org/fx"
 )
 

@@ -1,9 +1,9 @@
 package eventhandlers
 
 import (
-	"github.com/Mth-Ryan/waveaction/pkg/logger"
-	cacherepositories "github.com/Mth-Ryan/waveaction/internal/application/interfaces/cache-repositories"
-	events "github.com/Mth-Ryan/waveaction/internal/domain/events/books"
+	"github.com/Mth-Ryan/go-web-templates/pkg/logger"
+	cacherepositories "github.com/Mth-Ryan/go-web-templates/internal/application/interfaces/cache-repositories"
+	events "github.com/Mth-Ryan/go-web-templates/internal/domain/events/books"
 )
 
 type BooksEventHandler struct {

@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
+	"github.com/Mth-Ryan/go-web-templates/internal/application/interfaces"
 	"go.uber.org/fx"
 )
 
