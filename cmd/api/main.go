@@ -17,7 +17,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func RegisterWebServer(lc fx.Lifecycle, ws *webserver.FiberWebServer) {
+func RegisterWebServer(lc fx.Lifecycle, ws webserver.WebServer) {
 	lc.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
 			go ws.StartServer()

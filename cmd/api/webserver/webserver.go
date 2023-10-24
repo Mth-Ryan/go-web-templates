@@ -14,6 +14,7 @@ var Module = fx.Provide(
 	fx.Annotate(
 		NewFiberWebServer,
 		fx.ParamTags(`group:"controllers"`),
+		fx.As(new(WebServer)),
 	),
 )
 
