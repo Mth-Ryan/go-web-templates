@@ -6,12 +6,50 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #application-header {
+                display: flex;
+                align-items: end;
+                gap: 20px;
+                padding: 10px 20px;
+                border-bottom: solid 1px #242424;
+            }
+
+            #application-title {
+                margin: 0;
+            }
+
+            #application-nav {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 5px;
+            }
+
+            #application-content {
+                padding: 20px;
+            }
+        </style>
+
         {% block head %}
         {% endblock %}
     </head>
 
     <body>
-        {% block content %}
-        {% endblock %}
+        <header id="application-header">
+            <h1 id="application-title">Website</h1>
+            <nav id="application-nav">
+                <a href="/home">Home</a>
+                <a href="/books">Books</a>
+            </nav>
+        </header>
+
+        <main id="application-content">
+            {% block content %}{% endblock %}
+        </main>
     </body>
 </html>
