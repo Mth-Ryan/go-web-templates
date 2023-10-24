@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 
+	"github.com/Mth-Ryan/waveaction/cmd/web/views"
 	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -34,7 +35,17 @@ func bindUUIDParam(ctx *fiber.Ctx, param string) (uuid.UUID, error) {
 	return id, nil
 }
 
-func renderView(ctx *fiber.Ctx, viewBytes []byte) error {
+func renderView(
+	ctx *fiber.Ctx,
+	renderer views.ViewsRenderer,
+	tmplName string,
+	tmplContext map[string]any,
+) error {
+	raw, err := renderer.Render(tmplName, tmplContext)
+	if err != nil {
+		return err
+	}
+
 	ctx.Set("Content-type", "text/html")
-	return ctx.Send(viewBytes)
+	return ctx.Send(raw)
 }

@@ -6,22 +6,24 @@ import (
 )
 
 type HomeController struct {
-	views *views.HomeViews
+	views views.ViewsRenderer
 }
 
-func NewHomeController(views *views.HomeViews) *HomeController {
+func NewHomeController(views views.ViewsRenderer) *HomeController {
 	return &HomeController {
 		views,
 	}
 }
 
 func (hc *HomeController) Index(ctx *fiber.Ctx) error {
-	raw, err := hc.views.Index()
-	if err != nil {
-		return err
-	}
-
-	return renderView(ctx, raw)
+	return renderView(
+		ctx,
+		hc.views,
+		"./templates/home/index.tmpl.html",
+		map[string]any{ 
+			"title": "Home",
+		},
+	)
 }
 
 func (hc *HomeController) RegisterController(app *fiber.App) {
