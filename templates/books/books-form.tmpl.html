@@ -1,0 +1,91 @@
+{% extends "../shared/layout.tmpl.html" %}
+
+{% block head %}
+<style>
+    #title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #details-section {
+        display: grid;
+        gap: 10px;
+    }
+
+    #actions-section {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+    }
+
+    #go-back-button {
+        text-decoration: none;
+        color: var(--background-accent);
+    }
+
+    form {
+        max-width: 500px;
+        display: grid;
+        gap: 10px;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 5px;
+    }
+
+    input[type=text] {
+        padding: 10px;
+        outline: none;
+        border: none;
+        border-radius: 4px;
+        background: var(--background-accent);
+        border: solid 1px rgba(var(--foreground-base), 0.15);
+        box-shadow: 5px 5px 10px rgba(var(--foreground-base), 0.1);
+    }
+
+    input[type=submit] {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section id="title-section">
+    <h2>{{ variantTitle }} Book</h2>
+    <a href="/books" class="elevated-button" id="go-back-button">go back</a>
+</section>
+
+<section id="form-section">
+    <form method="post">
+        <label>
+            Title*
+            <input 
+                name="title"
+                type="text"
+                {% if book != nil %}
+                value="{{ book.Title }}"
+                {% endif %}
+            />
+        </label>
+        <label>
+            Author*
+            <input 
+                name="author"
+                type="text"
+                {% if book != nil %}
+                value="{{ book.Author }}"
+                {% endif %}
+            />
+        </label>
+
+        <input class="elevated-button" type="submit" value="{{ variantTitle }}" />
+    </form>
+</section>
+
+{% endblock %}

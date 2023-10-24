@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/Mth-Ryan/waveaction/cmd/web/views"
 	"github.com/Mth-Ryan/waveaction/internal/application/dtos"
 	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
@@ -66,6 +68,18 @@ func (bc *BooksController) Get(ctx *fiber.Ctx) error {
 }
 
 func (bc *BooksController) Create(ctx *fiber.Ctx) error {
+	return renderView(
+		ctx,
+		bc.views,
+		"./templates/books/books-form.tmpl.html",
+		map[string]any{
+			"title": "Books",
+			"variantTitle": "Create",
+		},
+	)
+}
+
+func (bc *BooksController) CreateSubmit(ctx *fiber.Ctx) error {
 	input := new(dtos.BookInputDto)
 	if err := bindAndValidate(ctx, bc.validator, input); err != nil {
 		return err
@@ -76,10 +90,33 @@ func (bc *BooksController) Create(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 	
-	return ctx.JSON(book)
+	return ctx.Redirect(fmt.Sprintf("/books/%s", book.ID.String()), 302)
 }
 
 func (bc *BooksController) Update(ctx *fiber.Ctx) error {
+	id, err := bindUUIDParam(ctx, "id")
+	if (err != nil) {
+		return err
+	}
+
+	book, err := bc.service.Get(id)
+	if err != nil {
+		return ctx.SendStatus(fiber.StatusNotFound)
+	}
+
+	return renderView(
+		ctx,
+		bc.views,
+		"./templates/books/books-form.tmpl.html",
+		map[string]any{
+			"title": "Books",
+			"variantTitle": "Edit",
+			"book": book,
+		},
+	)
+}
+
+func (bc *BooksController) UpdateSubmit(ctx *fiber.Ctx) error {
 	id, err := bindUUIDParam(ctx, "id")
 	if (err != nil) {
 		return err
@@ -95,7 +132,7 @@ func (bc *BooksController) Update(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return ctx.JSON(book)
+	return ctx.Redirect(fmt.Sprintf("/books/%s", book.ID.String()), 302)
 }
 
 func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
@@ -116,8 +153,9 @@ func (bc *BooksController) RegisterController(app *fiber.App) {
 	router := app.Group("/books")
 
 	router.Get("/", bc.GetAll)
+	router.Get("/create", bc.Create)
+	router.Post("/create", bc.CreateSubmit)
 	router.Get("/:id", bc.Get)
-	router.Post("/", bc.Create)
-	router.Put("/:id", bc.Update)
-	router.Delete("/:id", bc.Delete)
+	router.Get("/:id/edit", bc.Update)
+	router.Post("/:id/edit", bc.UpdateSubmit)
 }
