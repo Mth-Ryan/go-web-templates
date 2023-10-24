@@ -1,0 +1,44 @@
+{% extends "../shared/layout.tmpl.html" %}
+
+{% block head %}
+<style>
+    #title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #go-back-button {
+        text-decoration: none;
+        color: var(--background-accent);
+    }
+
+    form {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    input[type=submit] {
+        font-size: 16px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section id="title-section">
+    <h2>Delete: {{ book.Title }}</h2>
+    <a href="/books" class="elevated-button" id="go-back-button">go back</a>
+</section>
+
+<section id="form-section">
+    <p>Are you sure that you want to delete: {{ book.Title }}.</p>
+
+    <form method="post">
+        <a href="/books" class="elevated-button" id="go-back-button">Cancel</a>
+        <input class="elevated-button" type="submit" value="Delete" />
+    </form>
+</section>
+
+{% endblock %}

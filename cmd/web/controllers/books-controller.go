@@ -135,7 +135,31 @@ func (bc *BooksController) UpdateSubmit(ctx *fiber.Ctx) error {
 	return ctx.Redirect(fmt.Sprintf("/books/%s", book.ID.String()), 302)
 }
 
+
 func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
+	id, err := bindUUIDParam(ctx, "id")
+	if (err != nil) {
+		return err
+	}
+
+	book, err := bc.service.Get(id)
+	if err != nil {
+		return ctx.SendStatus(fiber.StatusNotFound)
+	}
+
+	return renderView(
+		ctx,
+		bc.views,
+		"./templates/books/delete.tmpl.html",
+		map[string]any{
+			"title": "Books",
+			"variantTitle": "Edit",
+			"book": book,
+		},
+	)
+}
+
+func (bc *BooksController) DeleteSubmit(ctx *fiber.Ctx) error {
 	id, err := bindUUIDParam(ctx, "id")
 	if (err != nil) {
 		return err
@@ -146,7 +170,7 @@ func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return ctx.SendStatus(fiber.StatusOK)
+	return ctx.Redirect("/books", 302)
 }
 
 func (bc *BooksController) RegisterController(app *fiber.App) {
@@ -158,4 +182,6 @@ func (bc *BooksController) RegisterController(app *fiber.App) {
 	router.Get("/:id", bc.Get)
 	router.Get("/:id/edit", bc.Update)
 	router.Post("/:id/edit", bc.UpdateSubmit)
+	router.Get("/:id/remove", bc.Delete)
+	router.Post("/:id/remove", bc.DeleteSubmit)
 }
