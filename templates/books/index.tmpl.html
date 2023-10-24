@@ -1,5 +1,74 @@
 {% extends "../shared/layout.tmpl.html" %}
 
+{% block head %}
+<style>
+    #title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #table {
+        border: solid 1px #242424;
+        border-radius: 4px;
+    }
+
+    #table-header {
+        display: grid;
+        grid-template-columns: minmax(26ch, 1fr) minmax(18ch, 26ch) 180px;
+        border-bottom: solid 1px #242424;
+    }
+
+    .table-label {
+        text-align: left;
+        padding: 10px 20px;
+    }
+
+    #table-body {
+    }
+
+    .table-row {
+        display: grid;
+        grid-template-columns: minmax(26ch, 1fr) minmax(18ch, 26ch) 180px;
+    }
+
+    .table-column {
+        padding: 10px 20px;
+    }
+
+    .table-actions {
+        display: flex;
+        gap: 10px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<h2>Books</h2>
+<section id="title-section">
+    <h2>Books</h2>
+    <a href="/books/create">Create new book</a>
+</section>
+
+<div id="table">
+    <div id="table-header">
+        <span class="table-label">Title</span>
+        <span class="table-label">Author</span>
+        <span class="table-label">Actions</span>
+    </div>
+    <div id="table-body">
+        {% for book in books %}
+        <div class="table-row">
+            <a href="/books/{{ book.ID }}" class="table-column"> 
+                {{ book.Title }}
+            </a>
+            <span class="table-column"> {{ book.Author }} </span>
+            <div class="table-column table-actions"> 
+                <a href="/books/{{ book.ID }}/edit">edit</a>
+                <a href="/books/{{ book.ID }}/remove">remove</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

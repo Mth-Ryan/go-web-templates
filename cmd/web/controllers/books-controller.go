@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/Mth-Ryan/waveaction/cmd/web/views"
 	"github.com/Mth-Ryan/waveaction/internal/application/dtos"
 	"github.com/Mth-Ryan/waveaction/internal/application/interfaces"
 	"github.com/Mth-Ryan/waveaction/internal/application/services"
@@ -10,15 +11,18 @@ import (
 type BooksController struct{
 	validator interfaces.JsonValidator
 	service services.BooksService
+	views views.ViewsRenderer
 }
 
 func NewBooksController(
 	validator interfaces.JsonValidator,
 	service services.BooksService,
+	views views.ViewsRenderer,
 ) *BooksController {
 	return &BooksController{
 		validator,
 		service,
+		views,
 	}
 }
 
@@ -28,7 +32,15 @@ func (bc *BooksController) GetAll(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(books)
+	return renderView(
+		ctx,
+		bc.views,
+		"./templates/books/index.tmpl.html",
+		map[string]any{
+			"title": "Books",
+			"books": books,
+		},
+	)
 }
 
 func (bc *BooksController) Get(ctx *fiber.Ctx) error {
