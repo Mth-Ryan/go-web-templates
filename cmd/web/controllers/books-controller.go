@@ -54,7 +54,15 @@ func (bc *BooksController) Get(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusNotFound)
 	}
 
-	return ctx.JSON(book)
+	return renderView(
+		ctx,
+		bc.views,
+		"./templates/books/show.tmpl.html",
+		map[string]any{
+			"title": "Books",
+			"book": book,
+		},
+	)
 }
 
 func (bc *BooksController) Create(ctx *fiber.Ctx) error {

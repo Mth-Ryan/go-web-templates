@@ -1,0 +1,46 @@
+{% extends "../shared/layout.tmpl.html" %}
+
+{% block head %}
+<style>
+    #title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #details-section {
+        display: grid;
+        gap: 10px;
+    }
+
+    #actions-section {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section id="title-section">
+    <h2>{{ book.Title }}</h2>
+    <a href="/books">go back</a>
+</section>
+
+<section id="details-section">
+    <div><strong>ID:</strong> {{ book.ID }}</div>
+    <div><strong>Author:</strong> {{ book.Author }}</div>
+    <div><strong>Created at:</strong> {{ book.CreatedAt }}</div>
+</section>
+
+<section id="actions-section">
+    <a href="/books/{{ book.ID }}/edit">
+        Edit
+    </a>
+    <a href="/books/{{ book.ID }}/remove">
+        Remove
+    </a>
+</section>
+
+{% endblock %}
