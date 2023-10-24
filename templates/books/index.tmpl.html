@@ -9,19 +9,21 @@
     }
 
     #table {
-        border: solid 1px #242424;
+        background-color: var(--background-accent);
+            box-shadow: 10px 10px 20px rgba(var(--foreground-base), 0.1);
         border-radius: 4px;
     }
 
     #table-header {
         display: grid;
         grid-template-columns: minmax(26ch, 1fr) minmax(18ch, 26ch) 180px;
-        border-bottom: solid 1px #242424;
+        box-shadow: 0px 3px 10px rgba(var(--foreground-base), 0.1);
     }
 
     .table-label {
         text-align: left;
         padding: 10px 20px;
+        font-weight: 700;
     }
 
     #table-body {
@@ -32,6 +34,11 @@
         grid-template-columns: minmax(26ch, 1fr) minmax(18ch, 26ch) 180px;
     }
 
+
+    .table-row:nth-child(even) {
+        background-color: rgba(var(--background-base), 1);
+    }
+
     .table-column {
         padding: 10px 20px;
     }
@@ -40,13 +47,20 @@
         display: flex;
         gap: 10px;
     }
+
+    #create-button {
+        text-decoration: none;
+        color: var(--background-accent);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <section id="title-section">
     <h2>Books</h2>
-    <a href="/books/create">Create new book</a>
+    <a class="elevated-button" id="create-button" href="/books/create">
+        Create new book
+    </a>
 </section>
 
 <div id="table">

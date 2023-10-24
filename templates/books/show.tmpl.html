@@ -18,6 +18,11 @@
         display: flex;
         gap: 20px;
     }
+
+    #go-back-button {
+        text-decoration: none;
+        color: var(--background-accent);
+    }
 </style>
 {% endblock %}
 
@@ -25,7 +30,7 @@
 
 <section id="title-section">
     <h2>{{ book.Title }}</h2>
-    <a href="/books">go back</a>
+    <a href="/books" class="elevated-button" id="go-back-button">go back</a>
 </section>
 
 <section id="details-section">
