@@ -1,25 +1,19 @@
 package controllers
 
 import (
-	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
 	"github.com/gofiber/fiber/v2"
 )
 
 type HomeController struct {
-	views views.ViewsRenderer
 }
 
-func NewHomeController(views views.ViewsRenderer) *HomeController {
-	return &HomeController {
-		views,
-	}
+func NewHomeController() *HomeController {
+	return &HomeController {}
 }
 
 func (hc *HomeController) Index(ctx *fiber.Ctx) error {
-	return renderView(
-		ctx,
-		hc.views,
-		"./templates/home/index.tmpl.html",
+	return ctx.Render(
+		"home/index",
 		map[string]any{ 
 			"title": "Home",
 		},

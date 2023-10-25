@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
 	"github.com/Mth-Ryan/go-web-templates/internal/application/interfaces"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -33,19 +32,4 @@ func bindUUIDParam(ctx *fiber.Ctx, param string) (uuid.UUID, error) {
 	}
 
 	return id, nil
-}
-
-func renderView(
-	ctx *fiber.Ctx,
-	renderer views.ViewsRenderer,
-	tmplName string,
-	tmplContext map[string]any,
-) error {
-	raw, err := renderer.Render(tmplName, tmplContext)
-	if err != nil {
-		return err
-	}
-
-	ctx.Set("Content-type", "text/html")
-	return ctx.Send(raw)
 }
