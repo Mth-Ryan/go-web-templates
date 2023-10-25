@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
 	"github.com/Mth-Ryan/go-web-templates/internal/application/dtos"
 	"github.com/Mth-Ryan/go-web-templates/internal/application/interfaces"
 	"github.com/Mth-Ryan/go-web-templates/internal/application/services"
@@ -13,18 +12,15 @@ import (
 type BooksController struct{
 	validator interfaces.JsonValidator
 	service services.BooksService
-	views views.ViewsRenderer
 }
 
 func NewBooksController(
 	validator interfaces.JsonValidator,
 	service services.BooksService,
-	views views.ViewsRenderer,
 ) *BooksController {
 	return &BooksController{
 		validator,
 		service,
-		views,
 	}
 }
 
@@ -34,10 +30,8 @@ func (bc *BooksController) GetAll(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return renderView(
-		ctx,
-		bc.views,
-		"./templates/books/index.tmpl.html",
+	return ctx.Render(
+		"books/index",
 		map[string]any{
 			"title": "Books",
 			"books": books,
@@ -56,24 +50,20 @@ func (bc *BooksController) Get(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusNotFound)
 	}
 
-	return renderView(
-		ctx,
-		bc.views,
-		"./templates/books/show.tmpl.html",
+	return ctx.Render(
+		"books/show",
 		map[string]any{
-			"title": "Books",
+			"title": book.Title,
 			"book": book,
 		},
 	)
 }
 
 func (bc *BooksController) Create(ctx *fiber.Ctx) error {
-	return renderView(
-		ctx,
-		bc.views,
-		"./templates/books/books-form.tmpl.html",
+	return ctx.Render(
+		"books/books-form",
 		map[string]any{
-			"title": "Books",
+			"title": "Create Book",
 			"variantTitle": "Create",
 		},
 	)
@@ -104,12 +94,10 @@ func (bc *BooksController) Update(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusNotFound)
 	}
 
-	return renderView(
-		ctx,
-		bc.views,
-		"./templates/books/books-form.tmpl.html",
+	return ctx.Render(
+		"books/books-form",
 		map[string]any{
-			"title": "Books",
+			"title": "Edit " + book.Title,
 			"variantTitle": "Edit",
 			"book": book,
 		},
@@ -147,13 +135,10 @@ func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusNotFound)
 	}
 
-	return renderView(
-		ctx,
-		bc.views,
-		"./templates/books/delete.tmpl.html",
+	return ctx.Render(
+		"books/delete",
 		map[string]any{
-			"title": "Books",
-			"variantTitle": "Edit",
+			"title": "Delete " + book.Title,
 			"book": book,
 		},
 	)

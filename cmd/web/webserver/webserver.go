@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Mth-Ryan/go-web-templates/cmd/web/controllers"
+	"github.com/Mth-Ryan/go-web-templates/cmd/web/views"
 	"github.com/Mth-Ryan/go-web-templates/pkg/conf"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -30,9 +31,15 @@ type FiberWebServer struct {
 
 func NewFiberWebServer(
 	controllers []controllers.BaseController, // This must be the first parameter
+	viewsFactory views.ViewsFactory,
 	appConf *conf.AppConf,
 ) *FiberWebServer {
-	server := fiber.New()
+
+	server := fiber.New(fiber.Config{
+		Views: views.NewViewsFiberAdapter(
+			viewsFactory.GetRenderer("./templates", ".tmpl.html"),
+		),
+	})
 	
 	server.Use(logger.New())
 	server.Static("/", "./public")
