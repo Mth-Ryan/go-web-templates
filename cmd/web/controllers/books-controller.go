@@ -53,7 +53,7 @@ func (bc *BooksController) Get(ctx *fiber.Ctx) error {
 	return ctx.Render(
 		"books/show",
 		map[string]any{
-			"title": "Books",
+			"title": book.Title,
 			"book": book,
 		},
 	)
@@ -63,7 +63,7 @@ func (bc *BooksController) Create(ctx *fiber.Ctx) error {
 	return ctx.Render(
 		"books/books-form",
 		map[string]any{
-			"title": "Books",
+			"title": "Create Book",
 			"variantTitle": "Create",
 		},
 	)
@@ -97,7 +97,7 @@ func (bc *BooksController) Update(ctx *fiber.Ctx) error {
 	return ctx.Render(
 		"books/books-form",
 		map[string]any{
-			"title": "Books",
+			"title": "Edit " + book.Title,
 			"variantTitle": "Edit",
 			"book": book,
 		},
@@ -138,8 +138,7 @@ func (bc *BooksController) Delete(ctx *fiber.Ctx) error {
 	return ctx.Render(
 		"books/delete",
 		map[string]any{
-			"title": "Books",
-			"variantTitle": "Edit",
+			"title": "Delete " + book.Title,
 			"book": book,
 		},
 	)

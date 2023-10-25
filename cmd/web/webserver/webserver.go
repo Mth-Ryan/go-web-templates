@@ -34,6 +34,7 @@ func NewFiberWebServer(
 	viewsFactory views.ViewsFactory,
 	appConf *conf.AppConf,
 ) *FiberWebServer {
+
 	server := fiber.New(fiber.Config{
 		Views: views.NewViewsFiberAdapter(
 			viewsFactory.GetRenderer("./templates", ".tmpl.html"),
