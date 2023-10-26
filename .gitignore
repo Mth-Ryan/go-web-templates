@@ -22,3 +22,7 @@ go.work
 
 # bin output folder
 bin/
+
+.env
+
+./tmp
