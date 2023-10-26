@@ -5,21 +5,51 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./
+    restart: on-failure
     volumes:
       - ./:/go-web-templates
     ports:
       - "8080:8080"
+    networks:
+      - go_tmpl_network
+
   database:
     image: postgres:latest
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: go-web-templates-dev
     ports:
       - "5432:5432"
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - go_tmpl_network
+
+  cache:
+    image: redis:latest
+    restart: on-failure
+    command: redis-server --save 20 1 --loglevel warning --requirepass redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - cache_data:/data
+    networks:
+      - go_tmpl_network
+
   adminer:
     image: adminer
-    restart: always
+    restart: on-failure
     ports:
       - "5000:8080"
+    networks:
+      - go_tmpl_network
+
+networks:
+  go_tmpl_network:
+    driver: bridge
+
+volumes:
+  database_data:
+  cache_data:
