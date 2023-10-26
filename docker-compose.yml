@@ -1,0 +1,25 @@
+version: "3.1"
+name: "go-web-templates"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    volumes:
+      - ./:/go-web-templates
+    ports:
+      - "8080:8080"
+  database:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: go-web-templates
+    ports:
+      - "5432:5432"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "5000:8080"

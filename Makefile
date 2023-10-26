@@ -29,6 +29,19 @@ copy_output:
 clean:
 	rm -rf $(BINARIES)
 
+start:
+	docker compose up -d
+
+migrate-download:
+	curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-arm64.tar.gz | tar xvz
+	mv migrate ./tmp
+
+migrations-up:
+	./tmp/migrate -path ./migrations -database "postgres://postgres:postgres@database:5432/go-web-templates?sslmode=disable" up
+
+migrations-down:
+	./tmp/migrate -path ./migrations -database "postgres://postgres:postgres@database:5432/go-web-templates?sslmode=disable" down
+
 .PHONY: all clean
 
 

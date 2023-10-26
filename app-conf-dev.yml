@@ -2,10 +2,10 @@ port: 8080
 
 data:
   database:
-    user: "${DB_USER|docker}"
-    pass: "${DB_PASS|docker}"
-    name: "${DB_NAME|waveaction_dev}"
-    host: "${DB_HOST|localhost}"
+    user: "${DB_USER|postgres}"
+    pass: "${DB_PASS|postgres}"
+    name: "${DB_NAME|go-web-templates}"
+    host: "${DB_HOST|database}"
     port: "${DB_PORT|5432}"
 
   cache:
