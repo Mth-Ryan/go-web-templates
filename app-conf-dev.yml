@@ -4,7 +4,7 @@ data:
   database:
     user: "${DB_USER|postgres}"
     pass: "${DB_PASS|postgres}"
-    name: "${DB_NAME|go-web-templates-dev}"
+    name: "${DB_NAME|go_web_templates_dev}"
     host: "${DB_HOST|localhost}"
     port: "${DB_PORT|5432}"
 
