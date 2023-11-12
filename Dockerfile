@@ -1,10 +1,24 @@
-FROM golang:latest
+FROM golang:1.21.3-alpine AS build
 
-WORKDIR /go-web-templates
+# install make
+RUN apk update
+RUN apk add --no-cache make
 
-RUN go install github.com/cosmtrek/air@latest
+WORKDIR /app
 
+# restore
 COPY go.mod go.sum ./
 RUN go mod download
 
-CMD ["air", "-c", ".air.toml"]
+COPY . ./
+
+# build
+RUN make all
+
+FROM alpine:latest
+
+COPY --from=build /app/bin /app
+
+WORKDIR /app
+
+CMD ["./init.sh"]
