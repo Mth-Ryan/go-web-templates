@@ -1,30 +1,19 @@
+.PHONY: all clean
+
+# Go cmd projects
 SRC_DIR := cmd
 
-# Define the output folder for binary files
+# Binaries out dir
 BIN_DIR := bin
 
-# Find all subdirectories in the SRC_DIR
+# Cmd dirs list
 SUBDIRS := $(wildcard $(SRC_DIR)/*)
 
-# Generate the binary file names based on the subdirectory names
+# Binaries list based on cmd dirs
 BINARIES := $(patsubst $(SRC_DIR)/%,$(BIN_DIR)/%,$(SUBDIRS))
 
-# The default target builds all binaries
-all: copy_output $(BINARIES)
-
-# Define a pattern rule to build each binary from its corresponding source directory
-$(BIN_DIR)/%: $(SRC_DIR)/%
-	@mkdir -p $(BIN_DIR)
-	go build -o $@ $</main.go
-
-copy_output:
-	@mkdir -p $(BIN_DIR)
-	cp ./app-conf.yml $(BIN_DIR)/app-conf.yml
-	cp ./app-conf-dev.yml $(BIN_DIR)/app-conf-dev.yml
-	cp -rf ./migrations $(BIN_DIR)/migrations
-
-	cp -rf ./public $(BIN_DIR)/public
-	cp -rf ./templates $(BIN_DIR)/templates
+# Build all and copy the runtime required files to the $BIN_DIR
+all: $(BINARIES) copy_output create_init_script
 
 clean:
 	rm -rf $(BIN_DIR)
@@ -38,6 +27,29 @@ migrations-up: all
 migrations-down: all
 	./bin/migrate down
 
-.PHONY: all clean
+$(BIN_DIR)/%: $(SRC_DIR)/%
+	@mkdir -p $(BIN_DIR)
+	go build -o $@ $</main.go
 
+copy_output:
+	@mkdir -p $(BIN_DIR)
+	cp ./app-conf.yml $(BIN_DIR)/app-conf.yml
+	cp ./app-conf-dev.yml $(BIN_DIR)/app-conf-dev.yml
+	cp -rf ./migrations $(BIN_DIR)/migrations
 
+	cp -rf ./public $(BIN_DIR)/public
+	cp -rf ./templates $(BIN_DIR)/templates
+
+# Create an init script to docker
+define INIT_SCRIPT
+#! /bin/sh
+set -e
+./migrate setup
+./migrate up
+./web
+endef
+export INIT_SCRIPT
+
+create_init_script:
+	@echo "$$INIT_SCRIPT" > $(BIN_DIR)/init.sh
+	chmod +x $(BIN_DIR)/init.sh
