@@ -1,18 +1,32 @@
+.PHONY: all clean
+
+# Go cmd projects
 SRC_DIR := cmd
 
-# Define the output folder for binary files
+# Binaries out dir
 BIN_DIR := bin
 
-# Find all subdirectories in the SRC_DIR
+# Cmd dirs list
 SUBDIRS := $(wildcard $(SRC_DIR)/*)
 
-# Generate the binary file names based on the subdirectory names
+# Binaries list based on cmd dirs
 BINARIES := $(patsubst $(SRC_DIR)/%,$(BIN_DIR)/%,$(SUBDIRS))
 
-# The default target builds all binaries
-all: copy_output $(BINARIES)
+# Build all and copy the runtime required files to the $BIN_DIR
+all: $(BINARIES) copy_output create_init_script
 
-# Define a pattern rule to build each binary from its corresponding source directory
+clean:
+	rm -rf $(BIN_DIR)
+
+migrations-setup: all
+	./bin/migrate setup
+	
+migrations-up: all
+	./bin/migrate up
+	
+migrations-down: all
+	./bin/migrate down
+
 $(BIN_DIR)/%: $(SRC_DIR)/%
 	@mkdir -p $(BIN_DIR)
 	go build -o $@ $</main.go
@@ -26,22 +40,16 @@ copy_output:
 	cp -rf ./public $(BIN_DIR)/public
 	cp -rf ./templates $(BIN_DIR)/templates
 
-clean:
-	rm -rf $(BINARIES)
+# Create an init script to docker
+define INIT_SCRIPT
+#! /bin/sh
+set -e
+./migrate setup
+./migrate up
+./web
+endef
+export INIT_SCRIPT
 
-start:
-	docker compose up -d
-
-migrate-download:
-	curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-arm64.tar.gz | tar xvz
-	mv migrate ./tmp
-
-migrations-up:
-	./tmp/migrate -path ./migrations -database "postgres://postgres:postgres@database:5432/go-web-templates?sslmode=disable" up
-
-migrations-down:
-	./tmp/migrate -path ./migrations -database "postgres://postgres:postgres@database:5432/go-web-templates?sslmode=disable" down
-
-.PHONY: all clean
-
-
+create_init_script:
+	@echo "$$INIT_SCRIPT" > $(BIN_DIR)/init.sh
+	chmod +x $(BIN_DIR)/init.sh

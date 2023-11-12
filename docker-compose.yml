@@ -41,14 +41,6 @@ services:
     networks:
       - go_tmpl_network
 
-  adminer:
-    image: adminer
-    restart: on-failure
-    ports:
-      - "5000:8080"
-    networks:
-      - go_tmpl_network
-
 networks:
   go_tmpl_network:
     driver: bridge

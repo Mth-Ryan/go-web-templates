@@ -13,14 +13,27 @@ type Database struct {
 }
 
 func NewDatabase(appConf *conf.AppConf) (*Database, error) {
-	ctx, err := newPostgresConnection(appConf)
-	database := Database { Ctx: ctx }
+	ctx, err := newPostgresConnection(appConf, nil)
+	database := Database{Ctx: ctx}
 
 	return &database, err
 }
 
-func newPostgresConnection(appConf *conf.AppConf) (*sql.DB, error) {
+func NewDefaultDatabase(appConf *conf.AppConf) (*Database, error) {
+	defaultDb := "postgres"
+
+	ctx, err := newPostgresConnection(appConf, &defaultDb)
+	database := Database{Ctx: ctx}
+
+	return &database, err
+}
+
+func newPostgresConnection(appConf *conf.AppConf, database *string) (*sql.DB, error) {
 	dbConf := appConf.Data.Database
+	dbName := dbConf.Name
+	if database != nil {
+		dbName = *database
+	}
 
 	connectionStr := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
@@ -28,10 +41,8 @@ func newPostgresConnection(appConf *conf.AppConf) (*sql.DB, error) {
 		dbConf.Port,
 		dbConf.User,
 		dbConf.Pass,
-		dbConf.Name,
+		dbName,
 	)
 
 	return sql.Open("postgres", connectionStr)
 }
-
-

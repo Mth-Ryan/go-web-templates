@@ -40,7 +40,7 @@ func NewFiberWebServer(
 			viewsFactory.GetRenderer("./templates", ".tmpl.html"),
 		),
 	})
-	
+
 	server.Use(logger.New())
 	server.Static("/", "./public")
 
@@ -55,7 +55,7 @@ func NewFiberWebServer(
 }
 
 func (ws *FiberWebServer) StartServer() error {
-	return ws.Server.Listen(fmt.Sprintf(":%d", ws.Config.Port))
+	return ws.Server.Listen(fmt.Sprintf(":%s", ws.Config.Port))
 }
 
 func (ws *FiberWebServer) ShutdownServer() error {

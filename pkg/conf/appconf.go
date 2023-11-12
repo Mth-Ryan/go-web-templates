@@ -10,7 +10,7 @@ var Module = fx.Options(fx.Provide(NewAppConf))
 
 type AppConf struct {
 	RunMode string
-	Port    int `config:"port"`
+	Port    string `config:"port"`
 	Data    struct {
 		Database struct {
 			User string `config:"user"`

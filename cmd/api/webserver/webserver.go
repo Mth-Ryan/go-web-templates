@@ -33,7 +33,7 @@ func NewFiberWebServer(
 	appConf *conf.AppConf,
 ) *FiberWebServer {
 	server := fiber.New()
-	
+
 	server.Use(logger.New())
 
 	for _, controller := range controllers {
@@ -47,7 +47,7 @@ func NewFiberWebServer(
 }
 
 func (ws *FiberWebServer) StartServer() error {
-	return ws.Server.Listen(fmt.Sprintf(":%d", ws.Config.Port))
+	return ws.Server.Listen(fmt.Sprintf(":%s", ws.Config.Port))
 }
 
 func (ws *FiberWebServer) ShutdownServer() error {
