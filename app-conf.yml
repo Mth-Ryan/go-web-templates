@@ -4,7 +4,7 @@ data:
   database:
     user: "${DB_USER}"
     pass: "${DB_PASS}"
-    name: "${DB_NAME|waveaction}"
+    name: "${DB_NAME|go-web-templates}"
     host: "${DB_HOST}"
     port: "${DB_PORT|5432}"
 
